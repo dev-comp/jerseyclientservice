@@ -1,17 +1,15 @@
 # jerseyclientservice
 
+Тестовый веб сервис с бизнес логикой и web мордой
+
 ## Сборка
 
-* Корректно сконфигурить
+* Корректно сконфигурить переменную *jdk.home.1.8* в файле *jerseyclientservice.properties*
 
-```
-jdk.home.1.8 в jerseyclientservice.properties
-```
-
-* Выполнить ant build
+* Выполнить *ant build*
 
 ## Запуск сервиса
 
-* Подложить в папку \tomcat\webapps\ сбилденный jerseyclientservice.war
+* Подложить в папку *\tomcat\webapps\* собранный *jerseyclientservice.war*
 
-* Запустить StartTomcat.bat
+* Запустить *StartTomcat.bat*
