@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="css/reset.css">  <!-- CSS reset -->
+  <link rel="stylesheet" href="css/style.css">  <!-- Resource style -->
+  <script src="js/vendor/modernizr-2.8.3.min.js"></script>
+
+  <title>BotService | LogPanel</title>
+</head>
+<body>
+  <form class="cd-form floating-labels">
+    <fieldset>
+      <legend>Bot LogPanel</legend>
+
+      <div class="error-message">
+        <p>Здесь в режиме реального времени будут отображаться все сообщения от бота</p>
+      </div>
+
+      <div class="icon">
+        <label class="cd-label" for="cd-textarea">TestBot Incoming message log</label>
+        <textarea class="message" name="cd-textarea" id="cd-textarea"></textarea>
+      </div>
+
+    </fieldset>
+  </form>
+  <script src="js/vendor/jquery-1.12.0.min.js"></script>
+  <script src="js/plugins.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

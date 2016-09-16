@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en" class="no-js">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,700' rel='stylesheet' type='text/css'>
+
+		<link rel="stylesheet" href="css/reset.css"> <!-- CSS reset -->
+		<link rel="stylesheet" href="css/style.css"> <!-- Resource style -->
+		<link rel="stylesheet" href="css/toastr.min.css"> <!-- toast style -->
+		<script src="js/vendor/modernizr-2.8.3.min.js"></script>
+
+		<title>BotService | TestPanel</title>
+	</head>
+	<body>
+		<form class="cd-form floating-labels">
+			<fieldset>
+				<legend>Chat window</legend>
+
+				<div class="icon">
+					<label class="cd-label" for="cd-textarea">Start chat</label>
+					<textarea class="message" name="cd-textarea" id="cd-textarea" required></textarea>
+				</div>
+
+				<div>
+					<input type="button" value="Send Message" id="btnSend" onclick="sendMsg();">
+				</div>
+			</fieldset>
+		</form>
+		<script src="js/vendor/jquery-1.12.0.min.js"></script>
+		<script src="js/plugins.js"></script>
+		<script src="js/main.js"></script> <!-- Resource jQuery -->
+		<script src="js/vendor/toastr.min.js"></script>
+		<script>
+			var oldchat = "";
+			toastr.options = {
+				"closeButton": true,
+				"positionClass": "toast-top-right"
+			};
+
+			/**
+			 * Общаемся с ботом, имитация сообщений из мессенджеров
+			 */
+			function sendMsg() {
+				var newchat = document.getElementById("cd-textarea").value.trim();
+				if (!newchat) {
+					toastr.warning('Nothing to send', 'Start chat');
+					document.getElementById("cd-textarea").focus();
+					return;
+				}
+
+				var realMsg;
+				// стерли часть текста, считаем что новое сообщение
+				if (newchat.length < oldchat.length) {
+					realMsg = newchat;
+					// если все что было содержится считаем продолжение диалога
+				} else if (oldchat.length > 0 && newchat.indexOf(oldchat) >= 0) {
+					realMsg = newchat.substring(oldchat.length, newchat.length);
+					// если нет старого диалога, значит новый запрос
+				} else {
+					realMsg = newchat;
+				}
+
+				$.ajax({
+					url: "rest/testbot/"+realMsg,
+					data: {
+						format: 'text'
+					},
+					dataType: 'text',
+					success: function(data) {
+						oldchat = document.getElementById("cd-textarea").value + "\n"+ "@BotAnswer: " + data + "\n";
+						document.getElementById("cd-textarea").value = oldchat;
+						document.getElementById("cd-textarea").focus();
+					},
+					type: 'GET'
+				});
+			}
+		</script>
+	</body>
+</html>

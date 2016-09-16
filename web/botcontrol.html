@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,700' rel='stylesheet' type='text/css'>
+
+    <link rel="stylesheet" href="css/reset.css"> <!-- CSS reset -->
+    <link rel="stylesheet" href="css/style.css"> <!-- Resource style -->
+    <link rel="stylesheet" href="css/toastr.min.css"> <!-- toast style -->
+    <link rel="stylesheet" href="css/List.css">       <!-- list style -->
+    <script src="js/vendor/modernizr-2.8.3.min.js"></script>
+
+    <title>BotService | ConrolPanel</title>
+  </head>
+  <body>
+    <form class="cd-form floating-labels">
+      <fieldset>
+        <div>
+          <legend>BotService ControlPanel</legend>
+
+          <h4>User List</h4>
+
+          <div id="users">
+            <input class="refresh" type="button" value="Refresh" id="btnRefresh" onclick="refreshList();">
+            <ul class="list"></ul>
+          </div>
+        </div>
+
+        <div>
+          <h4>Send a notice for User</h4>
+
+          <div class="icon">
+            <label class="cd-label" for="cd-name">User name</label>
+            <input class="user" type="text" name="cd-name" id="cd-name" required>
+          </div>
+
+          <div class="icon">
+            <label class="cd-label" for="cd-textarea">Notification text</label>
+            <textarea class="message" name="cd-textarea" id="cd-textarea" required></textarea>
+          </div>
+
+          <div>
+            <input type="button" value="Send" id="btnSend" onclick="sendMsg();">
+          </div>
+        </div>
+      </fieldset>
+    </form>
+    <script src="js/vendor/jquery-1.12.0.min.js"></script>
+ 		<script src="js/plugins.js"></script>
+ 		<script src="js/main.js"></script>
+ 		<script src="js/vendor/toastr.min.js"></script>
+    <script src="js/vendor/List.js"></script>
+    <script>
+      var userList;
+
+      toastr.options = {
+        "closeButton": true,
+        "positionClass": "toast-top-right"
+      };
+
+      /**
+       * Запросить список пользователей
+       */
+      function refreshList() {
+        if (userList) {
+          userList.clear();
+        }
+        $.getJSON("rest/get/clientlist",
+                function (data) {
+                  var options = {
+                    valueNames: ['name', 'surname'],
+                    item: '<li><h3 class="name"></h3><p class="surname"></p></li>'
+                  };
+                  userList = new List('users', options, data);
+                });
+      }
+
+      /**
+       *  Отправить сообщение выбранному пользователю
+       */
+      function sendMsg() {
+        var user = document.getElementById("cd-name").value.trim();
+        var msg = document.getElementById("cd-textarea").value.trim();
+
+        if (!user) {
+          toastr.warning('Empty field', 'User name');
+          document.getElementById("cd-name").focus();
+          return;
+        }
+        if (!msg) {
+          toastr.warning('Empty field', 'Notification text');
+          document.getElementById("cd-textarea").focus();
+          return;
+        }
+
+        // кольхозим,
+        // поскольку пользователя берем из одного поля, то самим надо отделить фамилию от отчества
+        var surnameStart = user.indexOf(" ");
+        var username = surnameStart > -1 ? user.substring(0, surnameStart) : user;
+        var surname = surnameStart > -1 ? user.substring(surnameStart+1, user.length) : "";
+
+        $.ajax({
+          type: 'POST',
+          contentType: 'application/json',
+          url: "/rest/testbot",
+          dataType: "text",
+          data: "{\"client\":{\"name\":\"" +  username + "\",\"surname\":\"" + surname + "\"},\"msg\":\"" + msg + "\"}",
+          success: function (data, textStatus, jqXHR) {
+            toastr.success(data, textStatus);
+          },
+          error: function (jqXHR, textStatus, errorThrown) {
+            toastr.error("Error", errorThrown);
+          }
+        });
+      }
+
+    </script>
+  </body>
+</html>

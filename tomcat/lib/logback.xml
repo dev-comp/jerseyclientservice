@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--конфигурации логера внешней xml, подробности смотреть на  logback.qos.ch-->
+<configuration>
+    <!--Возможные значения уровня журнализации: DEBUG, INFO, WARN, ERROR, FATAL, OFF-->
+    <!--Параметры журнализация в консоль-->
+    <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>DEBUG</level><!--Уровень журнализации сервера приложений в стандартный поток вывода-->
+        </filter>
+		<encoder>
+            <charset>cp866</charset><!--Используемая кодировка для вывода в консоль (Cp866,Cp1251,KOI8_R,ISO8859_5,UTF-8)-->
+            <pattern>%d{dd.MM.yy HH:mm:ss.SSS},%t,%p,%c{0},%m%n</pattern><!--формат вывода-->
+        </encoder>
+    </appender>
+
+    <!--Параметры журнализация в файл-->
+    <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>DEBUG</level><!--Уровень журнализации сервера приложений-->
+        </filter>
+        <append>true</append>
+        <file>${catalina.base}/logs/AZKWebServer.log</file><!--путь к файла и имя файла лога-->
+        <encoder>
+            <charset>Cp1251</charset><!--Используемая кодировка для вывода в файл (Cp866,Cp1251,KOI8_R,ISO8859_5,UTF-8)-->
+            <pattern>%d{dd.MM.yy HH:mm:ss.SSS},%t,%p,%c{0},%m%n</pattern><!--формат вывода-->
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+            <!--Размер "револьверного" буфера архивов логов. При формировании-->
+            <!--нового архива лога старые файлы будут увеличивать-->
+            <!--Если не указан то равен 7-->
+            <maxIndex>5</maxIndex>
+	    <fileNamePattern>${catalina.base}/logs/AZKWebServer.%i.log.zip</fileNamePattern>
+        </rollingPolicy>
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <MaxFileSize>100MB</MaxFileSize><!--размер файла при привыщение которого происходит архивация-->
+        </triggeringPolicy>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="stdout"/>
+        <appender-ref ref="file"/>
+    </root>
+
+</configuration>
