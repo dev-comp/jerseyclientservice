@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="jerseyclientservice" default="all">
   
-  
-  <property file="jerseyclientservice.properties"/>
+  <property environment="env"/>
+  <property name="jdk.home.1.8" value="${env.JAVA_HOME}"/>
+
   <!-- Uncomment the following property if no tests compilation is needed -->
   <!-- 
   <property name="skip.tests" value="true"/>
