@@ -10,8 +10,10 @@ import java.io.IOException;
 
 /**
  * Created by a.bogdanov on 15.09.2016.
- * Пришлось писать адатаптер для MsgObject, т.к. из коробки GsonProvider не может создать такой "сложный" объект
+ * Пример адаптера для MsgObject, модет потребоваться для сложных объектов <br>
+ * НЕ используется
  */
+@Deprecated
 public class MsgObjectAdapter extends TypeAdapter<MsgObject> {
 
   /**

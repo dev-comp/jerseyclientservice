@@ -34,7 +34,8 @@ public class GsonProvider<T> implements MessageBodyReader<T>, MessageBodyWriter<
 
   public GsonProvider() {
     GsonBuilder builder = new GsonBuilder()
-            .registerTypeAdapter(MsgObject.class, new MsgObjectAdapter())
+            // todo@doc здесь можно регистрировать адаптеры для сложных объектов
+            // .registerTypeAdapter(MsgObject.class, new MsgObjectAdapter())
             .serializeNulls()
             .enableComplexMapKeySerialization();
 

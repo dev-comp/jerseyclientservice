@@ -54,6 +54,7 @@
     <script src="js/vendor/List.js"></script>
     <script>
       var userList;
+      var userListData = [];
 
       toastr.options = {
         "closeButton": true,
@@ -69,9 +70,10 @@
         }
         $.getJSON("rest/get/clientlist",
                 function (data) {
+                  userListData = data;
                   var options = {
                     valueNames: ['name', 'surname'],
-                    item: '<li><h3 class="name"></h3><p class="surname"></p></li>'
+                    item: '<li><h3 class="name"></h3><p class="surname"></p><h4>telegram</h4></li>'
                   };
                   userList = new List('users', options, data);
                 });
@@ -94,19 +96,45 @@
           document.getElementById("cd-textarea").focus();
           return;
         }
+        if (!userListData || userListData.length==0) {
+          toastr.warning("Empty list", "User List");
+          return;
+        }
 
-        // кольхозим,
+        // колхозим,
         // поскольку пользователя берем из одного поля, то самим надо отделить фамилию от отчества
         var surnameStart = user.indexOf(" ");
-        var username = surnameStart > -1 ? user.substring(0, surnameStart) : user;
-        var surname = surnameStart > -1 ? user.substring(surnameStart+1, user.length) : "";
+        var username = surnameStart > -1 ? user.substring(0, surnameStart).trim() : user;
+        var surname = surnameStart > -1 ? user.substring(surnameStart+1, user.length).trim() : "";
+        // созданим обекты
+        var clientObject = {};
+        clientObject.name = username;
+        clientObject.surname = surname;
+        var msgObject = {};
+        msgObject.client = clientObject;
+        msgObject.msg = msg;
+
+        // ищем нашего пользователя в списке
+        var found = false;
+        for (var i = 0; i < userListData.length; i++) {
+          if (userListData[i]["name"] == username && userListData[i]["surname"] == surname) {
+            // todo@doc ищем по фио и дописываем месенджер clientObject.messenger = userListData[i]["messenger"];
+            found = true;
+            break;
+          }
+        }
+        if (!found) {
+          toastr.warning("No such User", "User List");
+          document.getElementById("cd-name").focus();
+          return;
+        }
 
         $.ajax({
           type: 'POST',
           contentType: 'application/json',
           url: "/rest/testbot",
           dataType: "text",
-          data: "{\"client\":{\"name\":\"" +  username + "\",\"surname\":\"" + surname + "\"},\"msg\":\"" + msg + "\"}",
+          data: JSON.stringify(msgObject),
           success: function (data, textStatus, jqXHR) {
             toastr.success(data, textStatus);
           },

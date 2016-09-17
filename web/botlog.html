@@ -12,7 +12,7 @@
 
   <title>BotService | LogPanel</title>
 </head>
-<body>
+<body onunload="destroyTimer();">
   <form class="cd-form floating-labels">
     <fieldset>
       <legend>Bot LogPanel</legend>
@@ -21,9 +21,9 @@
         <p>Здесь в режиме реального времени будут отображаться все сообщения от бота</p>
       </div>
 
+      <h4>TestBot Incoming message log</h4>
       <div class="icon">
-        <label class="cd-label" for="cd-textarea">TestBot Incoming message log</label>
-        <textarea class="message" name="cd-textarea" id="cd-textarea"></textarea>
+        <textarea class="message" name="cd-textarea" id="cd-textarea" readonly></textarea>
       </div>
 
     </fieldset>
@@ -31,5 +31,14 @@
   <script src="js/vendor/jquery-1.12.0.min.js"></script>
   <script src="js/plugins.js"></script>
   <script src="js/main.js"></script>
+  <script>
+    var myTimer = setInterval(function() { document.getElementById("cd-textarea").value = document.getElementById("cd-textarea").value + "test" + "\n";}, 2000);
+    // см как добвалять текст в http://stackoverflow.com/questions/14444938/append-text-to-textarea-with-javascript
+    // не нужна тут текст ареа лучшен опять список взять
+    function destroyTimer() {
+      clearInterval(myTimer);
+    }
+
+  </script>
 </body>
 </html>
