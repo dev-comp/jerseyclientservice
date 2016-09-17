@@ -331,6 +331,16 @@ Form
   border-radius: .25em;
   padding: 16px;
 }
+.cd-form .info-message p {
+  background: #2c97de;
+  color: #ffffff;
+  font-size: 1.4rem;
+  text-align: center;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  border-radius: .25em;
+  padding: 16px;
+}
 .cd-form .error {
   border-color: #e94b35 !important;
 }

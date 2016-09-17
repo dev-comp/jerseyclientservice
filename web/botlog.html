@@ -8,6 +8,7 @@
 
   <link rel="stylesheet" href="css/reset.css">  <!-- CSS reset -->
   <link rel="stylesheet" href="css/style.css">  <!-- Resource style -->
+  <link rel="stylesheet" href="css/List.css">       <!-- list style -->
   <script src="js/vendor/modernizr-2.8.3.min.js"></script>
 
   <title>BotService | LogPanel</title>
@@ -17,13 +18,13 @@
     <fieldset>
       <legend>Bot LogPanel</legend>
 
-      <div class="error-message">
-        <p>Здесь в режиме реального времени будут отображаться все сообщения от бота</p>
+      <div class="info-message">
+        <p>Здесь в режиме реального времени будут отображаться все сообщения от пользователей к боту</p>
       </div>
 
       <h4>TestBot Incoming message log</h4>
-      <div class="icon">
-        <textarea class="message" name="cd-textarea" id="cd-textarea" readonly></textarea>
+      <div id="users">
+        <ul class="list"></ul>
       </div>
 
     </fieldset>
@@ -31,12 +32,33 @@
   <script src="js/vendor/jquery-1.12.0.min.js"></script>
   <script src="js/plugins.js"></script>
   <script src="js/main.js"></script>
+  <script src="js/vendor/List.js"></script>
   <script>
-    var myTimer = setInterval(function() { document.getElementById("cd-textarea").value = document.getElementById("cd-textarea").value + "test" + "\n";}, 2000);
-    // см как добвалять текст в http://stackoverflow.com/questions/14444938/append-text-to-textarea-with-javascript
-    // не нужна тут текст ареа лучшен опять список взять
+    var myTimer = setInterval(function() {addRow()}, 2000);
+
+    // на всякий случай явно убьем таймер при уходе со страницы
     function destroyTimer() {
       clearInterval(myTimer);
+    }
+
+    var options = {
+      valueNames: [ 'time', 'name', 'messanger' ],
+      item: '<li><p class="time"></p><h3 class="name"></h3><h4 class ="messanger"></h4></li>'
+    };
+
+    var userList = new List('users', options, []);
+
+    /**
+     * Добаваляет строчку в окно лога
+     */
+    function addRow() {
+      if (userList) {
+        userList.add({
+          time: new Date().toLocaleString(),
+          name: "Gustaf Lindqvist",
+          messanger: "telegram"
+        });
+      }
     }
 
   </script>
