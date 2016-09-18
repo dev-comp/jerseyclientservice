@@ -53,6 +53,8 @@
  		<script src="js/vendor/toastr.min.js"></script>
     <script src="js/vendor/List.js"></script>
     <script>
+      var GET_URL = "rest/get/clientlist";
+      var POST_URL = "/rest/testbot";
       var userList;
       var userListData = [];
 
@@ -68,7 +70,7 @@
         if (userList) {
           userList.clear();
         }
-        $.getJSON("rest/get/clientlist",
+        $.getJSON(GET_URL,
                 function (data) {
                   userListData = data;
                   var options = {
@@ -132,7 +134,7 @@
         $.ajax({
           type: 'POST',
           contentType: 'application/json',
-          url: "/rest/testbot",
+          url: POST_URL,
           dataType: "text",
           data: JSON.stringify(msgObject),
           success: function (data, textStatus, jqXHR) {

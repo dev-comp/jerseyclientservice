@@ -75,15 +75,15 @@ public class GsonProvider<T> implements MessageBodyReader<T>, MessageBodyWriter<
   public void writeTo(T t, Class<?> type, Type genericType, Annotation[] annotations,
                       MediaType mediaType, MultivaluedMap<String, Object> httpHeaders,
                       OutputStream entityStream) throws IOException, WebApplicationException {
-    try (PrintWriter printWriter = new PrintWriter(entityStream)) {
+    try (OutputStreamWriter je = new OutputStreamWriter(entityStream, "UTF-8")) {
       String json;
       if (ui.getQueryParameters().containsKey(PRETTY_PRINT)) {
         json = prettyGson.toJson(t);
       } else {
         json = gson.toJson(t);
       }
-      printWriter.write(json);
-      printWriter.flush();
+      je.write(json);
+      je.flush();
     }
   }
 }

@@ -20,7 +20,7 @@
 
 				<div class="icon">
 					<label class="cd-label" for="cd-textarea">Start chat</label>
-					<textarea class="message" name="cd-textarea" id="cd-textarea" required></textarea>
+					<textarea class="message" name="cd-textarea" id="cd-textarea" onkeydown="keyDown(event);" required></textarea>
 				</div>
 
 				<div>
@@ -33,6 +33,7 @@
 		<script src="js/main.js"></script> <!-- Resource jQuery -->
 		<script src="js/vendor/toastr.min.js"></script>
 		<script>
+			var REST_URL = "rest/testbot/";
 			var oldchat = "";
 			toastr.options = {
 				"closeButton": true,
@@ -63,7 +64,7 @@
 				}
 
 				$.ajax({
-					url: "rest/testbot/"+realMsg,
+					url: REST_URL + realMsg,
 					data: {
 						format: 'text'
 					},
@@ -75,6 +76,12 @@
 					},
 					type: 'GET'
 				});
+			}
+
+			function keyDown(event) {
+				if (event.ctrlKey && event.keyCode == 13) {
+					sendMsg(); // Ctrl-Enter pressed
+				}
 			}
 		</script>
 	</body>

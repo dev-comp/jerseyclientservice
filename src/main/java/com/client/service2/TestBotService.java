@@ -8,7 +8,8 @@ package com.client.service2;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.ArrayList;
+import java.sql.Timestamp;
+import java.util.Date;
 
 @Path("/testbot")
 public class TestBotService {
@@ -29,6 +30,7 @@ public class TestBotService {
       /orders
       /order#12345 пятизначный заказ
      */
+    TestStorage.incomingMessages.put(new Timestamp(new Date().getTime()), new MsgObject(TestStorage.defUser, message));
     return Response.status(200).entity(output).build();
   }
 

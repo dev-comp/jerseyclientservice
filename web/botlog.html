@@ -26,7 +26,7 @@
       <div id="users">
         <ul class="list"></ul>
       </div>
-
+      <input type="button" value="ClearList" id="btnClear" onclick="userList.clear();">
     </fieldset>
   </form>
   <script src="js/vendor/jquery-1.12.0.min.js"></script>
@@ -34,32 +34,66 @@
   <script src="js/main.js"></script>
   <script src="js/vendor/List.js"></script>
   <script>
-    var myTimer = setInterval(function() {addRow()}, 2000);
+    var REFRESH_INTERVAL = 10; // интервал опроса сервера в секундах
+    var REST_URL = "rest/get/incominglog/";
+    var firstLoad = true;
+
+    /* настройки списка */
+    var options = {
+      valueNames: [ 'time', 'name', 'messanger' ],
+      item: '<li><p class="time"></p><h3 class="name"></h3><h4 class ="messanger"></h4></li>'
+    };
+    var userList = new List('users', options, []);
+
+    // опрос сервера на наличие новых логов
+    var myTimer = setInterval(function() {getLog()}, REFRESH_INTERVAL*1000);     // и еще каждый 10 сек
 
     // на всякий случай явно убьем таймер при уходе со страницы
     function destroyTimer() {
       clearInterval(myTimer);
     }
 
-    var options = {
-      valueNames: [ 'time', 'name', 'messanger' ],
-      item: '<li><p class="time"></p><h3 class="name"></h3><h4 class ="messanger"></h4></li>'
-    };
+    /**
+     * Добаваляет строчку в список лога
+     */
+    function addRow(index, value) {
+      userList.add({
+        time: index,
+        name: value.client.name + " " + value.client.surname + " via telegram",
+        messanger: value.msg
+      });
+    }
 
-    var userList = new List('users', options, []);
+    /** Вычисляет параметр для запроса getLog */
+    function getParamForRequest() {
+      if (firstLoad) {
+        firstLoad = false;
+        return "all";
+      }
+      var obj = new Date();
+      obj.setSeconds(obj.getSeconds() - REFRESH_INTERVAL);
+      return JSON.stringify(obj);
+    }
 
     /**
-     * Добаваляет строчку в окно лога
+     * Получает лог с сервера, для оптимизации получаем не все, а кусками
+     * В качестве параметар отправляем либо текущее время и сервер вернет все, что после него
+     * Либо all и тогда вернется полный лог
      */
-    function addRow() {
+    function getLog() {
       if (userList) {
-        userList.add({
-          time: new Date().toLocaleString(),
-          name: "Gustaf Lindqvist",
-          messanger: "telegram"
-        });
+        $.getJSON(REST_URL + getParamForRequest(),
+            function (data) {
+              $.each(data, function(index,value){
+                addRow(index, value);
+              });
+            });
       }
     }
+
+    $(document).ready(function() {
+      getLog(); // сразу запросим
+    });
 
   </script>
 </body>
