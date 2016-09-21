@@ -1,5 +1,5 @@
 /* Имя под которым мы зарегистрирована на БотСервисе */
-var OUR_REG_NAME = "client_name";
+var OUR_REG_NAME = "Andrey";
 /* api для получения своих пользователей */
 var GET_USERS_URL = "http://172.21.21.249:8080/botservice/rs/api/userKeyList/" + OUR_REG_NAME;
 var GET_USERS_URL_TEST = "rest/get/clientlist";
@@ -11,7 +11,8 @@ var POST_SENDMSG_URL = "http://172.21.21.249:8080/botservice/rs/api/sendMsg";
 var POST_SENDMSG_URL_TEST = "rest/get/sendmsg/";
 
 /* api для общения с ботом */
-var POST_TESTBOT_MSG_URL = "rest/testbot/";
+var POST_OURBOTAPI_URL_LOCAL = "rest/testbot/";
+var POST_OURBOTAPI_URL = "http://172.21.20.111:8081/rest/testbot";
 
 
 /* Настройка всплывающих сообщений */
@@ -42,6 +43,16 @@ function formatErrorMessage(jqXHR, exception) {
 	} else {
 		return ('Uncaught Error.\n' + jqXHR.responseText);
 	}
+}
+
+/* не заморачиваемся */
+function getBrowser() {
+	if (navigator.userAgent.toLowerCase().indexOf('chrome') > -1)
+	  return "Chrome";
+	else if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1)
+	  return "Firefox";
+	else
+		return "Unknown browser";
 }
 
 /**

@@ -15,37 +15,37 @@ import java.util.Date;
 public class TestBotService {
 
   /**
-   * Релизует БЛ бота
-   * @param message входящее сообщение от мессенджера
-   * @return String ответ
+   * Реализация ЭХО бота <br>
+   * @param incMessage Входящее сообщение дл бота MsgObject
+   * @return message Исходящее сообщения типа MsgObject
    */
-  @GET
-  @Produces(MediaType.TEXT_PLAIN + "; charset=UTF-8") // чтобы нормально кириллицу отдавал
-  @Path("/{param:.+}")                                // чтобы слеши в параметрах принимал
-  public Response getMessage(@PathParam("param") String message) {
-    String output = "Jersey says " + message;
+  @POST
+  @Consumes(MediaType.APPLICATION_JSON + "; charset=UTF-8")
+  @Produces(MediaType.APPLICATION_JSON + "; charset=UTF-8")
+  public Response postMessage(MsgObject incMessage) {
+    String msgText = incMessage.msgBody;
+    // формируем ответное сообщение
+    MsgObject outMessage = new MsgObject(incMessage.userObject, "JerseyEchoBot: " + msgText);
+
     /*
       todo@doc если будет время реализовать на регулярка или просто так обработку команд
       /help
       /orders
       /order#12345 пятизначный заказ
      */
-    TestStorage.incomingMessages.put(new Timestamp(new Date().getTime()), new MsgObject(TestStorage.defUser, message));
-    return Response.status(200).entity(output).build();
+
+    // сохраняем для тестового примера в локальном хранилище
+    TestStorage.incomingMessages.put(new Timestamp(new Date().getTime()), incMessage);
+    return Response.status(200).entity(outMessage).build();
   }
 
-  /**
-   * Исходящее сообщение конретному пользователю мессенджера <br>
-   * <b>Фактически заглушка, т.к. проще идти сразу на RESTService регистрирующий ботов</b>
-   * @param message Исходящее сообщение
-   * @return String успешный ответ или текст с ошибкой
-   */
-  @POST
-  @Consumes(MediaType.APPLICATION_JSON)
-  @Produces(MediaType.TEXT_PLAIN + "; charset=UTF-8")
-  public Response postMessage(MsgObject message) {
-    String output = "Message send successfully";
-    return Response.status(200).entity(output).build();
-  }
 
+/*
+  Просто пример
+  @GET
+  @Produces(MediaType.TEXT_PLAIN + "; charset=UTF-8") // чтобы нормально кириллицу отдавал
+  @Path("/{param:.+}")                                // чтобы слеши в параметрах принимал
+  public Response getMessage(@PathParam("param") String message) {
+
+*/
 }

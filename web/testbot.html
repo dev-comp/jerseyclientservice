@@ -58,22 +58,29 @@
 					realMsg = newchat;
 				}
 
+				var clientObject = {};
+				clientObject.userName = "Web User";
+				clientObject.botEntryName = getBrowser();
+				var msgObject = {};
+				msgObject.userObject = clientObject;
+				msgObject.msgBody = realMsg;
+
 				$.ajax({
-					url: POST_TESTBOT_MSG_URL + realMsg,
-					data: {
-						format: 'text'
-					},
-					dataType: 'text',
-					success: function(data) {
-						oldchat = document.getElementById("cd-textarea").value + "\n"+ "@BotAnswer: " + data + "\n";
+					type: 'POST',
+					contentType: 'application/json',
+					url: POST_OURBOTAPI_URL_LOCAL,
+					dataType: 'json',
+					data: JSON.stringify(msgObject),
+					success: function (data, textStatus, jqXHR) {
+						oldchat = document.getElementById("cd-textarea").value + "\n"+ "@BotAnswer: " + data.msgBody + "\n";
 						document.getElementById("cd-textarea").value = oldchat;
 						document.getElementById("cd-textarea").focus();
 					},
-					type: 'GET',
-					error: function(xhr, err) {
+					error: function (xhr, textStatus, err) {
 						toastr.error("Error", formatErrorMessage(xhr, err));
 					}
 				});
+
 			}
 
 			function keyDown(event) {
