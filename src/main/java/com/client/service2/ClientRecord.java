@@ -6,17 +6,17 @@ package com.client.service2;
  */
 public class ClientRecord {
 
-	final String name;
-	final String surname;
+	final String userName;
+	final String botEntryName;
 
 	/**
 	 * Объект однозначно идентифицирующий клиента (пользователя мессенджера)
 	 * @param _name имя
-	 * @param _surname фамилия
+	 * @param _botEntryName имя бота с которого писали
 	 */
-	public ClientRecord(String _name, String _surname) {
-		name = _name;
-		surname = _surname;
+	public ClientRecord(String _name, String _botEntryName) {
+		userName = _name;
+		botEntryName = _botEntryName;
 	}
 
 	@Override
@@ -25,13 +25,13 @@ public class ClientRecord {
 		if (!(o instanceof ClientRecord)) return false;
 
 		ClientRecord that = (ClientRecord) o;
-		return !(name != null ? !name.equals(that.name) : that.name != null) && !(surname != null ? !surname.equals(that.surname) : that.surname != null);
+		return !(userName != null ? !userName.equals(that.userName) : that.userName != null) && !(botEntryName != null ? !botEntryName.equals(that.botEntryName) : that.botEntryName != null);
 	}
 
 	@Override
 	public int hashCode() {
-		int result = name != null ? name.hashCode() : 0;
-		result = 31 * result + (surname != null ? surname.hashCode() : 0);
+		int result = userName != null ? userName.hashCode() : 0;
+		result = 31 * result + (botEntryName != null ? botEntryName.hashCode() : 0);
 		return result;
 	}
 

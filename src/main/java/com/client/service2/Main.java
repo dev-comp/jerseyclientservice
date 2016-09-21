@@ -17,7 +17,7 @@ public class Main {
     String json = gson.toJson(msg);
     System.out.println(json);
 
-    String tmp = "{\"client\": { \"name\": \"Name\", \"surname\": \"Surname\" }, \"msg\": \"Some Text\" }";
+    String tmp = "{\"userObject\": { \"userName\": \"Name\", \"botEntryName\": \"Surname\" }, \"msgBody\": \"Some Text\" }";
     MsgObject msg2 = gson.fromJson(json, MsgObject.class);
   }
 }

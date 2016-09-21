@@ -6,17 +6,17 @@ package com.client.service2;
  */
 public class MsgObject {
 
-  final ClientRecord client;
-  final String msg;
+  final ClientRecord userObject;
+  final String msgBody;
 
   /**
    * Объект описывающий сообщений
    * @param _client клиент (объект однозначно определящий адресата)
-   * @param _msg текст сообщеиня
+   * @param _msgBody текст сообщеиня
    */
-  public MsgObject(ClientRecord _client, String _msg) {
-    client = _client;
-    msg = _msg;
+  public MsgObject(ClientRecord _client, String _msgBody) {
+    userObject = _client;
+    msgBody = _msgBody;
   }
 
   @Override
@@ -26,13 +26,13 @@ public class MsgObject {
 
     MsgObject msgObject = (MsgObject) o;
 
-    return client.equals(msgObject.client) && msg.equals(msgObject.msg);
+    return userObject.equals(msgObject.userObject) && msgBody.equals(msgObject.msgBody);
   }
 
   @Override
   public int hashCode() {
-    int result = client.hashCode();
-    result = 31 * result + msg.hashCode();
+    int result = userObject.hashCode();
+    result = 31 * result + msgBody.hashCode();
     return result;
   }
 }

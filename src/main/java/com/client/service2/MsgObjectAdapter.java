@@ -26,7 +26,7 @@ public class MsgObjectAdapter extends TypeAdapter<MsgObject> {
   public void write(JsonWriter out, MsgObject value) throws IOException  {
     // не проверял работу метода
     Gson gson = new Gson();
-    out.beginObject().name("client");
+    out.beginObject().name("userObject");
     gson.getAdapter(new TypeToken<MsgObject>() {}).write(out, value);
     out.endObject();
   }
@@ -42,21 +42,21 @@ public class MsgObjectAdapter extends TypeAdapter<MsgObject> {
     in.beginObject();
     while (in.hasNext()) {
       switch (in.nextName()) {
-      case "client":
+      case "userObject":
         in.beginObject();
         while (in.hasNext()) {
           switch (in.nextName()) {
-            case "name":
+            case "userName":
               name = in.nextString();
               break;
-            case "surname":
+            case "botEntryName":
               surname = in.nextString();
               break;
           }
         }
         in.endObject();
         break;
-      case "msg":
+      case "msgBody":
         msg = in.nextString();
         break;
       }

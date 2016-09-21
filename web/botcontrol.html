@@ -48,20 +48,15 @@
       </fieldset>
     </form>
     <script src="js/vendor/jquery-1.12.0.min.js"></script>
- 		<script src="js/plugins.js"></script>
- 		<script src="js/main.js"></script>
  		<script src="js/vendor/toastr.min.js"></script>
     <script src="js/vendor/List.js"></script>
+    <script src="js/plugins.js"></script>
+		<script src="js/main.js"></script>
     <script>
-      var GET_URL = "rest/get/clientlist";
       var POST_URL = "/rest/testbot";
       var userList;
       var userListData = [];
 
-      toastr.options = {
-        "closeButton": true,
-        "positionClass": "toast-top-right"
-      };
 
       /**
        * Запросить список пользователей
@@ -70,15 +65,18 @@
         if (userList) {
           userList.clear();
         }
-        $.getJSON(GET_URL,
-                function (data) {
-                  userListData = data;
-                  var options = {
-                    valueNames: ['name', 'surname'],
-                    item: '<li><h3 class="name"></h3><p class="surname"></p><h4>telegram</h4></li>'
-                  };
-                  userList = new List('users', options, data);
-                });
+        $.getJSON(GET_USERS_URL,
+            function (data) {
+              userListData = data;
+              var options = {
+                valueNames: ['userName', 'botEntryName'],
+                item: '<li><h3 class="userName"></h3><p class="botEntryName"></p></li>'
+              };
+              userList = new List('users', options, data);
+            })
+              .fail(function(xhr, err) {
+                  toastr.error("Error", formatErrorMessage(xhr, err));
+              })
       }
 
       /**
@@ -119,7 +117,7 @@
         // ищем нашего пользователя в списке
         var found = false;
         for (var i = 0; i < userListData.length; i++) {
-          if (userListData[i]["name"] == username && userListData[i]["surname"] == surname) {
+          if (userListData[i]["userName"] == username && userListData[i]["botEntryName"] == surname) {
             // todo@doc ищем по фио и дописываем месенджер clientObject.messenger = userListData[i]["messenger"];
             found = true;
             break;

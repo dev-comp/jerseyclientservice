@@ -29,16 +29,11 @@
 			</fieldset>
 		</form>
 		<script src="js/vendor/jquery-1.12.0.min.js"></script>
+		<script src="js/vendor/toastr.min.js"></script>
 		<script src="js/plugins.js"></script>
 		<script src="js/main.js"></script> <!-- Resource jQuery -->
-		<script src="js/vendor/toastr.min.js"></script>
 		<script>
-			var REST_URL = "rest/testbot/";
 			var oldchat = "";
-			toastr.options = {
-				"closeButton": true,
-				"positionClass": "toast-top-right"
-			};
 
 			/**
 			 * Общаемся с ботом, имитация сообщений из мессенджеров
@@ -64,7 +59,7 @@
 				}
 
 				$.ajax({
-					url: REST_URL + realMsg,
+					url: POST_TESTBOT_MSG_URL + realMsg,
 					data: {
 						format: 'text'
 					},
@@ -74,7 +69,10 @@
 						document.getElementById("cd-textarea").value = oldchat;
 						document.getElementById("cd-textarea").focus();
 					},
-					type: 'GET'
+					type: 'GET',
+					error: function(xhr, err) {
+						toastr.error("Error", formatErrorMessage(xhr, err));
+					}
 				});
 			}
 
