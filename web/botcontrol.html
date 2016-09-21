@@ -68,8 +68,8 @@
             function (data) {
               userListData = data;
               var options = {
-                valueNames: ['userName', 'botEntryName'],
-                item: '<li><h3 class="userName"></h3><p class="botEntryName"></p></li>'
+                valueNames: ['userName', 'botName'],
+                item: '<li><h3 class="userName"></h3><p class="botName"></p></li>'
               };
               userList = new List('users', options, data);
             })
@@ -108,7 +108,7 @@
         // созданим обекты
         var clientObject = {};
         clientObject.userName = username;
-        clientObject.botEntryName = botname;
+        clientObject.botName = botname;
         var msgObject = {};
         msgObject.userObject = clientObject;
         msgObject.msgBody = msg;
@@ -116,7 +116,7 @@
         // ищем нашего пользователя в списке
         var found = false;
         for (var i = 0; i < userListData.length; i++) {
-          if (userListData[i]["userName"] == username && userListData[i]["botEntryName"] == botname) {
+          if (userListData[i]["userName"] == username && userListData[i]["botName"] == botname) {
             // todo@doc ищем по фио и дописываем месенджер clientObject.messenger = userListData[i]["messenger"];
             found = true;
             break;

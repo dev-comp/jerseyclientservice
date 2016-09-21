@@ -49,7 +49,7 @@ public class MsgObjectAdapter extends TypeAdapter<MsgObject> {
             case "userName":
               name = in.nextString();
               break;
-            case "botEntryName":
+            case "botName":
               surname = in.nextString();
               break;
           }
