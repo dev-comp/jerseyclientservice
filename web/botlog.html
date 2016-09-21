@@ -84,7 +84,7 @@
      */
     function getLog() {
       if (userList) {
-        $.getJSON(TEST_GET_LOG_URL + getParamForRequest(),
+        $.getJSON(GET_LOG_URL_TEST + getParamForRequest(),
             function (data) {
               $.each(data, function(index,value){
                 addRow(index, value);

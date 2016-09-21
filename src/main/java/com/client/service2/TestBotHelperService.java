@@ -35,4 +35,18 @@ public class TestBotHelperService {
   public Response getIncomingLog(@PathParam("date") String date) {
     return Response.status(200).entity(TestStorage.getLog(date)).build();
   }
+
+  /**
+   * Исходящее сообщение конретному пользователю мессенджера <br>
+   * @param message Исходящее сообщение
+   * @return String успешный ответ или текст с ошибкой
+   */
+  @POST
+  @Path("/sendmsg")
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.TEXT_PLAIN + "; charset=UTF-8")
+  public Response postMessage(MsgObject message) {
+    String output = "Message transfered to BotService successfully";
+    return Response.status(200).entity(output).build();
+  }
 }

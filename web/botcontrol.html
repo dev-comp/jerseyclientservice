@@ -53,7 +53,6 @@
     <script src="js/plugins.js"></script>
 		<script src="js/main.js"></script>
     <script>
-      var POST_URL = "/rest/testbot";
       var userList;
       var userListData = [];
 
@@ -103,21 +102,21 @@
 
         // колхозим,
         // поскольку пользователя берем из одного поля, то самим надо отделить фамилию от отчества
-        var surnameStart = user.indexOf(" ");
-        var username = surnameStart > -1 ? user.substring(0, surnameStart).trim() : user;
-        var surname = surnameStart > -1 ? user.substring(surnameStart+1, user.length).trim() : "";
+        var botnameStart = user.indexOf(" ");
+        var username = botnameStart > -1 ? user.substring(0, botnameStart).trim() : user;
+        var botname = botnameStart > -1 ? user.substring(botnameStart+1, user.length).trim() : "";
         // созданим обекты
         var clientObject = {};
-        clientObject.name = username;
-        clientObject.surname = surname;
+        clientObject.userName = username;
+        clientObject.botEntryName = botname;
         var msgObject = {};
-        msgObject.client = clientObject;
-        msgObject.msg = msg;
+        msgObject.userObject = clientObject;
+        msgObject.msgBody = msg;
 
         // ищем нашего пользователя в списке
         var found = false;
         for (var i = 0; i < userListData.length; i++) {
-          if (userListData[i]["userName"] == username && userListData[i]["botEntryName"] == surname) {
+          if (userListData[i]["userName"] == username && userListData[i]["botEntryName"] == botname) {
             // todo@doc ищем по фио и дописываем месенджер clientObject.messenger = userListData[i]["messenger"];
             found = true;
             break;
@@ -132,16 +131,17 @@
         $.ajax({
           type: 'POST',
           contentType: 'application/json',
-          url: POST_URL,
+          url: POST_SENDMSG_URL,
           dataType: "text",
           data: JSON.stringify(msgObject),
           success: function (data, textStatus, jqXHR) {
-            toastr.success(data, textStatus);
+            toastr.success("Success", "Message transfered to BotService");
           },
-          error: function (jqXHR, textStatus, errorThrown) {
-            toastr.error("Error", errorThrown);
+          error: function (xhr, textStatus, err) {
+            toastr.error("Error", formatErrorMessage(xhr, err));
           }
         });
+
       }
 
     </script>
