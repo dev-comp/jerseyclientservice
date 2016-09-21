@@ -38,7 +38,7 @@
 
           <div class="icon">
             <label class="cd-label" for="cd-textarea">Notification text</label>
-            <textarea class="message" name="cd-textarea" id="cd-textarea" required></textarea>
+            <textarea class="message" name="cd-textarea" id="cd-textarea" onkeydown="keyDown(event);" required></textarea>
           </div>
 
           <div>
@@ -142,6 +142,12 @@
           }
         });
 
+      }
+
+      function keyDown(event) {
+        if (event.ctrlKey && event.keyCode == 13) {
+          sendMsg(); // Ctrl-Enter pressed
+        }
       }
 
     </script>
