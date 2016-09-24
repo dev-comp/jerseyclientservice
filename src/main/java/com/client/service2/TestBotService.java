@@ -25,20 +25,17 @@ public class TestBotService {
   public Response postMessage(MsgObject incMessage) {
     String responseText;
     if (incMessage.msgBody.trim().equals("/start")) {
-      responseText = "Hello! Lets drink for us dear " + incMessage.userObject.userName + "  \uD83C\uDF7B";
+      responseText = "Hello! I`m echo toast bot. Lets drink for us dear " + incMessage.userObject.userName + "  \uD83C\uDF7B";
     }
     else if (incMessage.msgBody.trim().equals("/help")) {
-      responseText = "I can speak toast or search USD exchange rate. For exchange rate types /exchrate, for toast anything else.";
-    }
-    else if (incMessage.msgBody.trim().equals("/exchrate")) {
-      responseText = "Exchange rate about 64.22";
+      responseText = "I` can speak toast, just type something.";
     }
     else {
       responseText = "Lets drink for \"" + incMessage.msgBody + "\"" + "  \uD83C\uDF7B";
     }
 
     // формируем ответное сообщение
-    MsgObject outMessage = new MsgObject(incMessage.userObject, "@AlcoBot: " + responseText);
+    MsgObject outMessage = new MsgObject(incMessage.userObject, "@BftDevCompEchoServiceBot: " + responseText);
 
     /*
       todo@doc если будет время реализовать на регулярка или просто так обработку команд
